@@ -1,0 +1,28 @@
+<h2 class="content-subhead">Search</h2>
+
+<form action="/search" method="get">
+  <input name="query" value="<%= params[:query] %>"/>
+  <button type="submit">Search</button>
+</form>
+
+<!-- if the query exists and its empty return the string no matches found-->
+<!-- if the query does exist print results for.. then populate a list of all the result names based on the number of the chapter in the href -->
+
+<% if params[:query] && @results.empty?  %>
+    <p>Sorry, no matches were found.</p>
+<% elsif params[:query] %>
+    <h2 class="content-subhead">Results for '<%= params[:query]%>'</h2>
+
+    <ul>
+      <% @results.each do |result| %>
+        <li><h4><%= result[:name] %></h4>
+        <ul>
+          <% result[:chapter].each do |idx, paragraph| %>
+            <li><a href="/chapters/<%= result[:number] %>#pgraph<%= idx %>"><%= strengthen(paragraph, params[:query]) %></a></li>
+          <% end %>
+        </ul>
+        </li>
+      <% end %>
+    </ul>
+
+<% end %>
